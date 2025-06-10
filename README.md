@@ -60,5 +60,5 @@ My approach was to make the whole page simpler once I read carefully that only o
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/waste-form.git
-   cd waste-form
+   git clone https://github.com/drnsanda/wewantwaste-frontend
+   cd wewantwaste-frontend
