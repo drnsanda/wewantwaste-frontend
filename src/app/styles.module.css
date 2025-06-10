@@ -1,24 +1,47 @@
-.wrapper{
-padding-top: 30px;
-}
-.dynamicList{
-text-align: center;
-}
-.dynamicListItem{
-color: #5A5A5A;
-}
-.logoWrapper{
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
 }
-.logo{
+
+.wrapper {
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+    min-height: 100vh;
+}
+
+.dynamicList {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 50px;
+}
+
+.dynamicListItem {
+    animation: fade 0.5s ease-in-out;
+    color: #5A5A5A;
+}
+
+.logoWrapper {}
+
+.logo {
     margin: 0 auto;
     height: 150px;
     width: 150px;
 }
-.requestActionBtnWrapper{
 
-}
-.requestActionBtn{
+.requestActionBtnWrapper {}
+
+.requestActionBtn {
     padding: 6px 24px;
     border-radius: 5px;
     background-color: #FF8400;
@@ -29,16 +52,25 @@ color: #5A5A5A;
     display: block;
     cursor: pointer;
 }
-.requestActionBtn:hover{
+
+.requestActionBtn:hover {
     background-color: #ec7b03;
 }
-.requestActionBtn:focus{
+
+.requestActionBtn:focus {
     outline: none;
 }
-.artworkWrapper{
 
+.artworkWrapper {}
+
+.artwork {
+    display: block;
+    margin: 0 auto;
 }
-.artwork{
-display: block;
-margin: 0 auto;
+
+@media screen and (max-width:1024px) {
+    .logo{
+        height: 75px;
+        width: 75px;
+    }
 }
