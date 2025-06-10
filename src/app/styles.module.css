@@ -1,1 +1,44 @@
-.test{}
+.wrapper{
+padding-top: 30px;
+}
+.dynamicList{
+text-align: center;
+}
+.dynamicListItem{
+color: #5A5A5A;
+}
+.logoWrapper{
+
+}
+.logo{
+    margin: 0 auto;
+    height: 150px;
+    width: 150px;
+}
+.requestActionBtnWrapper{
+
+}
+.requestActionBtn{
+    padding: 6px 24px;
+    border-radius: 5px;
+    background-color: #FF8400;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+.requestActionBtn:hover{
+    background-color: #ec7b03;
+}
+.requestActionBtn:focus{
+    outline: none;
+}
+.artworkWrapper{
+
+}
+.artwork{
+display: block;
+margin: 0 auto;
+}
