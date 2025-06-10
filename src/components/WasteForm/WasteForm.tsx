@@ -1,9 +1,42 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import styles from './styles.module.css';
 
 interface IWasteForm {
-
+    address:{
+        city:string,
+        street:string,
+        houseNumber:string,
+        postcode?:string
+    }
+    wasteDetails:{
+        types:Array<string>,
+        overWeightTypes:Array<string>,
+        isPlasterBoardAvailable:boolean,
+        plasterBoardPercentage:string,
+        skip:{
+            id:string,
+            title:string,
+            description:string,
+            yards:number,
+            total:number,
+            acceptableOnRoad:boolean
+        },
+        permit:{
+            type:"public"|"private"
+        },
+        date:{
+            delivery:string,
+            collection:string
+        },
+        client:{
+            name:string,
+            email:string,
+            phoneNumber:string
+        }
+    }
+  
 }
 type FormAccordion = {
     hasError: boolean;
@@ -33,6 +66,15 @@ const FormAccordion = ({ children, hasError, isInitiallyVisible, title }: FormAc
 
 }
 const WasteForm = () => {
+
+    const { register, formState: { errors } } = useForm();
+
+
+    // Helper function to check if any errors exist for fields in a section
+    const hasSectionError = (fieldNames: string[]) => {
+        return fieldNames.some(fieldName => errors[fieldName]);
+    };
+
     return <>
         <section className={styles?.wrapper}>
             <div className='container mx-auto px-4 py-5'>
