@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import Image from 'next/image';
+import DatePicker from "react-datepicker";
 import styles from './styles.module.css';
 
 interface IWasteForm {
@@ -16,19 +18,27 @@ interface IWasteForm {
         isPlasterBoardAvailable: boolean,
         plasterBoardPercentage: string,
         skip: {
-            id: string,
-            title: string,
-            description: string,
-            yards: number,
-            total: number,
-            acceptableOnRoad: boolean
+            id: number;
+            size: number;
+            postcode: string;
+            area: string;
+            price_before_vat: number;
+            vat: number;
+            hire_period_days: number;
+            allowed_on_road: boolean;
+            allows_heavy_waste: boolean;
+            forbidden: boolean;
+            created_at: string | Date;
+            updated_at: string | Date;
+            per_tonne_cost?: number | null;
+            transport_cost?: number | null;
         },
         permit: {
             type: "public" | "private"
         },
         date: {
-            delivery: string,
-            collection: string
+            delivery: Date,
+            collection: Date
         },
         skipPhoto: string
     },
@@ -39,6 +49,7 @@ interface IWasteForm {
     }
 
 }
+
 
 type FormAccordion = {
     hasError: boolean;
@@ -69,7 +80,16 @@ const FormAccordion = ({ children, hasError, isInitiallyVisible, title }: FormAc
 }
 const WasteForm = () => {
 
-    const { register, formState: { errors }, watch, control } = useForm<IWasteForm>();
+    const { register, formState: { errors }, watch, control } = useForm<IWasteForm>({
+        defaultValues: {
+            wasteDetails: {
+                date: {
+                    delivery: new Date(),
+                    collection: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // Default to 7 days from now
+                }
+            }
+        }
+    });
 
 
     // Helper function to check if any errors exist for fields in a section
@@ -116,13 +136,53 @@ const WasteForm = () => {
         "Over 10%"
     ];
 
+    const deliveryDate = watch("wasteDetails.date.delivery");
+
+    const [skips, setSkips] = useState<Array<any>>([]);
+    const [selectedSkip,setSelectedSkip] = useState<string>("");
+    const [loadingSkips, setLoadingSkips] = useState<boolean>(false);
+    const [errorSkips, setErrorSkips] = useState<string | null>(null);
+
+    const postcode = "NR32";
+    const area = "Lowestoft";
+
+    useEffect(() => {
+        const fetchSkips = async () => {
+            if (!postcode || !area) return;
+
+            try {
+                setLoadingSkips(true);
+                setErrorSkips(null);
+
+                const response = await fetch(
+                    `https://app.wewantwaste.co.uk/api/skips/by-location?postcode=${encodeURIComponent(postcode)}&area=${encodeURIComponent(area)}`
+                );
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setSkips(data);
+
+            } catch (err) {
+                setErrorSkips(err instanceof Error ? err.message : 'Failed to fetch skips');
+                console.error('Error fetching skips:', err);
+            } finally {
+                setLoadingSkips(false);
+            }
+        };
+
+        fetchSkips();
+    }, [postcode, area]);
+
     return <>
         <section className={styles?.wrapper}>
             <div className='container mx-auto px-4 py-5'>
                 <h1 className={styles?.title}>Great! Please fill out the following information!</h1>
             </div>
             <form className={styles?.formWrapper}>
-                <FormAccordion hasError={false} title='1. Delivery Information' isInitiallyVisible={true}>
+                <FormAccordion hasError={hasSectionError(['deliveryName', 'deliveryAddress'])} title='1. Delivery Information' isInitiallyVisible={true}>
                     <div className="space-y-4 mb-3">
                         <h3 className="text-lg font-medium text-gray-900">Address</h3>
 
@@ -264,7 +324,7 @@ const WasteForm = () => {
                         </div>
                     </div>
                 </FormAccordion>
-                <FormAccordion hasError={false} title='2. Waste Details' >
+                <FormAccordion hasError={hasSectionError(['deliveryName', 'deliveryAddress'])} title='2. Waste Details' >
                     <div className="space-y-6">
 
                         {/* Waste Types Checkboxes */}
@@ -352,7 +412,7 @@ const WasteForm = () => {
                                 </div>
                             )}
                             <div className="space-y-6 mt-6">
-                                
+
                                 {/* Permit Type Selection */}
                                 <div className="space-y-2">
                                     <label htmlFor="permitType" className="block text-sm font-medium text-gray-700">
@@ -452,13 +512,86 @@ const WasteForm = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="space-y-2">
+                            <label htmlFor="permitType" className="block text-sm font-medium text-gray-700">
+                                Choose Your Skip Size
+                            </label>
+                            <ul className={styles?.skipList}>
+                                {
+                                    skips?.map((item) => (<li onClick={()=>setSelectedSkip(item?.id)} key={item?.id} className={styles?.skipListItem}>
+                                        <input readOnly checked={item?.id===selectedSkip ? true : false} className={styles?.skipListItemRadio} type='radio' alt='is-checked' />
+                                        <div className={styles?.skipListItemWrapper}>
+                                            <div className={styles?.left}>
+                                                <img className={styles?.skipListItemImage} src="https://yozbrydxdlcxghkphhtq.supabase.co/storage/v1/object/public/skips/skip-sizes/4-yarder-skip.jpg" alt='skip-yard-meta' />
+                                            </div>
+                                            <div className={styles?.right}>
+                                                <h4 className={styles?.skipListItemTitle}>{item?.size} Yards</h4>
+                                                <p className={styles?.skipListItemMeta}>Allowed on Road : {item?.allowed_on_road
+                                                    === true ? "Yes" : "No"}</p>
+                                                <p className={styles?.skipListItemMeta}>Allows Heavy Waste : {item?.allows_heavy_waste
+                                                    === true ? "Yes" : "No"}</p>
+                                                <p className={styles?.skipListItemPrice}> £ {(item.price_before_vat * (1 + item.vat / 100)).toLocaleString("en-UK")}</p>
+                                            </div>
+
+
+                                        </div>
+                                    </li>))
+                                }
+
+                            </ul>
+                        </div>
                     </div>
                 </FormAccordion>
-                <FormAccordion hasError={true} title='3. Date' >
-                    <p>BODY</p>
+                <FormAccordion hasError={hasSectionError(['wasteDetails.date.delivery', 'wasteDetails.date.collection'])} title='3. Date' >
+                    <div className="space-y-4">
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* Delivery Date */}
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Delivery Date*
+                                </label>
+                                <Controller
+                                    name="wasteDetails.date.delivery"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            selected={field.value}
+                                            onChange={(date) => field.onChange(date)}
+                                            minDate={new Date()}
+                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                                            popperClassName="z-50"
+                                            dateFormat="MMMM d, yyyy"
+                                        />
+                                    )}
+                                />
+                            </div>
+
+                            {/* Collection Date */}
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Collection Date*
+                                </label>
+                                <Controller
+                                    name="wasteDetails.date.collection"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            selected={field.value}
+                                            onChange={(date: any) => field.onChange(date)}
+                                            minDate={deliveryDate || new Date()}
+                                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
+                                            popperClassName="z-50"
+                                            dateFormat="MMMM d, yyyy"
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </FormAccordion>
             </form>
-            <div className="requestActionBtnWrapper">
+            <div className="requestActionBtnWrapper mb-4">
                 <button type='button' className="requestActionBtn">Proceed to Payment</button>
             </div>
         </section>

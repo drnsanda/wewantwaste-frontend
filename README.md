@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Waste Collection Service Form
 
-## Getting Started
+![Form Preview](public/screenshot-1.png) 
 
-First, run the development server:
+A NextJS page for waste collection services with multiple sections, validation, and API integration. Coding Challenge.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+My approach was to make the whole page simpler once I read carefully that only one page was needed, I've focused on highlighting the requested. Instead of using vertical cards, I used horizontal cards providing other necessary information and displayed a radio button when a skip is selected.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 📝 Multi-section form with accordion navigation
+- 🏠 Address validation and autocomplete
+- ♻️ Waste type selection with conditional fields
+- 📅 Date picker for delivery/collection scheduling
+- 💳 Skip selection with real-time pricing
+- 📸 Photo upload for permit requirements
+- ✅ Comprehensive form validation
+- 📱 Fully responsive design
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![Initial Preview](public/screenshot-2.png) 
 
-## Learn More
+## Form Sections
 
-To learn more about Next.js, take a look at the following resources:
+1. **Delivery Information**
+   - Full address details
+   - Postcode validation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Waste Details**
+   - Waste type checkboxes (Construction, Household, etc.)
+   - Overweight materials selection
+   - Plasterboard percentage (if applicable)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Skip Selection**
+   - Real-time skip options by location
+   - Pricing breakdown
+   - Hire period selection
 
-## Deploy on Vercel
+4. **Permit & Placement**
+   - Permit type selection (Public/Private)
+   - Skip placement photo upload
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **Schedule Dates**
+   - Delivery date picker
+   - Collection date picker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+6. **Client Information**
+   - Contact details
+   - Email/phone validation
+
+## Technologies Used
+
+- ⚛️ React 18
+- 🎨 Tailwind CSS
+- 📋 React Hook Form
+- 📅 React Datepicker
+- 🌐 Fetch API
+- 🏷️ TypeScript
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo/waste-form.git
+   cd waste-form
