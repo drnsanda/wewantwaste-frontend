@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import {useRouter} from 'next/navigation';
 import Logo from '@/assets/core/logo.svg';
 import Artwork from '@/assets/core/artwork.svg';
 import styles from './styles.module.css';
 export default function Home() {
   const [index, setIndex] = useState(0);
+  const router = useRouter();
 
   const messages = [
     "♻️ Smarter Waste Collection & Delivery — On Demand",
@@ -42,7 +44,7 @@ export default function Home() {
             />
           </ul>
           <div className={styles?.requestActionBtnWrapper}>
-            <button className={styles?.requestActionBtn}>Click here if you need us</button>
+            <button onClick={()=>{router.push("/form")}} className={styles?.requestActionBtn}>Click here if you need us</button>
           </div>
           <div className={styles?.artworkWrapper}>
             <Image src={Artwork} alt='artwork' className={styles?.artwork} />
