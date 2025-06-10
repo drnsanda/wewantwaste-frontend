@@ -9,3 +9,24 @@ body {
   overflow-y: auto;
 }
 
+.requestActionBtnWrapper {}
+
+.requestActionBtn {
+    padding: 6px 24px;
+    border-radius: 5px;
+    background-color: #FF8400;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+
+.requestActionBtn:hover {
+    background-color: #ec7b03;
+}
+
+.requestActionBtn:focus {
+    outline: none;
+}

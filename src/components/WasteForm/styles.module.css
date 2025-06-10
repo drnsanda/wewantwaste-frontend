@@ -1,0 +1,81 @@
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.formWrapper {
+    max-width: 760px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+
+.accordionWrapper {
+    margin: 5px 0;
+}
+
+.accordionHeader {
+    padding: 15px;
+    box-shadow: 0px 1px 6px rgba(227, 227, 227, 0.8);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+.accordionHeader *{
+    cursor: pointer;
+}
+
+.accordionTitle {
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+.accordionIndicatorIcon {
+    content: "";
+    display: inline-block;
+    height: 9px;
+    width: 15px;
+    background-image: url("data:image/svg+xml,%3Csvg width='15' height='9' viewBox='0 0 15 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M0.366113 0.376574C0.854277 -0.125525 1.64573 -0.125525 2.13389 0.376574L7.50002 5.89605L12.8662 0.376574C13.3543 -0.125525 14.1458 -0.125525 14.6339 0.376574C15.122 0.878686 15.122 1.69275 14.6339 2.19485L8.38389 8.62345C7.89577 9.12552 7.10427 9.12552 6.61614 8.62345L0.366113 2.19485C-0.122038 1.69275 -0.122038 0.878686 0.366113 0.376574Z' fill='%236E6E6E'/%3E%3C/svg%3E%0A");
+    transition: transform 150ms ease-in-out;
+}
+.accordionIndicatorIcon.active{
+transform: rotateZ(180deg);
+}
+
+
+.accordionBody {
+    padding: 0px;
+    height: 0px;
+    width: 0px;
+    opacity: 0;
+    transition: height, opacity 150ms, 10ms ease-in-out;
+}
+
+.accordionBody.active {
+    padding: 30px;
+    min-height: 250px;
+    height: auto;
+    width: 100%;
+    opacity: 1;
+    border-left: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
+    border-bottom: 1px solid #dcdcdc;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.accordionWrapper.danger {
+
+}
+
+.accordionWrapper.danger .accordionHeader {
+    box-shadow: 0px 1px 6px rgba(255, 0, 0, 0.841);
+}
+
+.accordionWrapper.danger .accordionBody {
+    border-color: red;
+}
